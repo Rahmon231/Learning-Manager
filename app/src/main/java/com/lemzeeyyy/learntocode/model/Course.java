@@ -16,6 +16,7 @@ import androidx.room.PrimaryKey;
 public class Course extends BaseObservable {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo
     private int course_id;
 
     @ColumnInfo
@@ -24,7 +25,7 @@ public class Course extends BaseObservable {
     @ColumnInfo
     private String course_name;
 
-    @ColumnInfo
+    @ColumnInfo(name = "unit_price")
     private String unitPrice;
 
     public Course(int course_id, int category_id, String course_name, String price) {
