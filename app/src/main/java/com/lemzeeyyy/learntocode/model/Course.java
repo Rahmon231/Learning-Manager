@@ -11,15 +11,17 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+
+
 @Entity(tableName = "course_table",foreignKeys = @ForeignKey(entity = Category.class,
         parentColumns = "id",childColumns = "category_id",onDelete = CASCADE))
+
 public class Course extends BaseObservable {
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo
     private int course_id;
 
-    @ColumnInfo
+    @ColumnInfo(name = "category_id")
     private int category_id;
 
     @ColumnInfo
@@ -28,11 +30,11 @@ public class Course extends BaseObservable {
     @ColumnInfo(name = "unit_price")
     private String unitPrice;
 
-    public Course(int course_id, int category_id, String course_name, String price) {
+    public Course(int course_id, int category_id, String course_name, String unitPrice) {
         this.course_id = course_id;
         this.category_id = category_id;
         this.course_name = course_name;
-        this.unitPrice = price;
+        this.unitPrice = unitPrice;
     }
 
     @Ignore
@@ -47,6 +49,8 @@ public class Course extends BaseObservable {
     public void setCourse_id(int course_id) {
         this.course_id = course_id;
         notifyPropertyChanged(BR.course_id);
+
+
     }
 
     @Bindable
@@ -57,6 +61,8 @@ public class Course extends BaseObservable {
     public void setCategory_id(int category_id) {
         this.category_id = category_id;
         notifyPropertyChanged(BR.category_id);
+
+
     }
 
     @Bindable
@@ -67,6 +73,8 @@ public class Course extends BaseObservable {
     public void setCourse_name(String course_name) {
         this.course_name = course_name;
         notifyPropertyChanged(BR.course_name);
+
+
     }
 
     @Bindable
@@ -78,6 +86,7 @@ public class Course extends BaseObservable {
     public void setUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
         notifyPropertyChanged(BR.unitPrice);
+
 
     }
 }

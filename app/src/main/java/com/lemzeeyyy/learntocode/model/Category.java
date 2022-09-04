@@ -9,12 +9,17 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
-@Entity(tableName = "catagory_table")
+
+@Entity(tableName = "category_table")
+
 public class Category extends BaseObservable {
+
     @PrimaryKey(autoGenerate = true)
-    private int category_id;
+    private int id;
+
     @ColumnInfo
     private String category_name;
+
     @ColumnInfo
     private String category_description;
 
@@ -22,20 +27,21 @@ public class Category extends BaseObservable {
     public Category() {
     }
 
-    public Category(int category_id, String category_name, String category_description) {
-        this.category_id = category_id;
+    public Category(int id, String category_name, String category_description) {
+        this.id = id;
         this.category_name = category_name;
         this.category_description = category_description;
     }
 
     @Bindable
-    public int getCategory_id() {
-        return category_id;
+    public int getId() {
+        return id;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
-        notifyPropertyChanged(BR.category_id);
+    public void setId(int id) {
+        this.id = id;
+        notifyPropertyChanged(BR.id);
+
     }
 
     @Bindable
@@ -47,6 +53,7 @@ public class Category extends BaseObservable {
         this.category_name = category_name;
         notifyPropertyChanged(BR.category_name);
 
+
     }
 
     @Bindable
@@ -57,5 +64,11 @@ public class Category extends BaseObservable {
     public void setCategory_description(String category_description) {
         this.category_description = category_description;
         notifyPropertyChanged(BR.category_description);
+
+    }
+
+    @Override
+    public String toString() {
+        return this.category_name;
     }
 }
