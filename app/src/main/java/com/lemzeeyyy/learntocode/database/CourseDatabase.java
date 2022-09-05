@@ -72,21 +72,27 @@ public abstract class CourseDatabase extends RoomDatabase {
                 Course course1 = new Course();
                 course1.setCourse_name("HTML");
                 course1.setUnitPrice("100$");
-                course1.setCourse_id(1);
+                course1.setCategory_id(1);
 
                 Course course2 = new Course();
                 course2.setCourse_name("CSS");
                 course2.setUnitPrice("200$");
-                course2.setCourse_id(2);
+                course2.setCategory_id(1);
 
                 Course course3 = new Course();
                 course3.setCourse_name("PHP");
                 course3.setUnitPrice("400$");
-                course3.setCourse_id(3);
+                course3.setCategory_id(2);
+
+                Course course4 = new Course();
+                course4.setCourse_name("GoLang");
+                course4.setUnitPrice("600$");
+                course4.setCategory_id(2);
 
                 courseDAO.insertCourse(course1);
                 courseDAO.insertCourse(course2);
                 courseDAO.insertCourse(course3);
+                courseDAO.insertCourse(course4);
             }
         });
     }
