@@ -1,10 +1,12 @@
 package com.lemzeeyyy.learntocode;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -91,16 +93,30 @@ public class MainActivity extends AppCompatActivity{
         courseRecyclerView.setAdapter(courseAdapter);
         courseAdapter.setCourseArrayList(courseArrayList);
 
-        courseAdapter.setListener(new CourseAdapter.onItemClickedListener() {
-            @Override
-            public void onItemClicked(Course course) {
+        courseAdapter.setListener(course -> {
 
-                //EDit Course
-                selectedCourseId = course.getCourse_id();
-                Intent intent = new Intent(MainActivity.this,AddEditActivity.class);
-                intent.putExtra(AddEditActivity.COURSE_ID, selectedCourseId);
-            }
+            //EDit Course
+            selectedCourseId = course.getCourse_id();
+            Intent intent = new Intent(MainActivity.this,AddEditActivity.class);
+            intent.putExtra(AddEditActivity.COURSE_ID, selectedCourseId);
+            intent.putExtra(AddEditActivity.COURSE_NAME,course.getCourse_name());
+            intent.putExtra(AddEditActivity.COURSE_PRICE,course.getUnitPrice());
+            startActivityForResult(intent,EDIT_COURSE_REQUEST_CODE);
         });
+
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Course courseToDelete = courseArrayList.get(viewHolder.getAdapterPosition());
+                mainActivityViewModel.deleteCourse(courseToDelete);
+            }
+        }).attachToRecyclerView(courseRecyclerView);
     }
 
     public class MainActivityClickHandlers {
@@ -118,7 +134,7 @@ public class MainActivity extends AppCompatActivity{
             loadCourseArrayList(selectedCategory.getId());
 
             String message = selectedCategory.getCategory_name();
-            Toast.makeText(MainActivity.this, ""+message, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, ""+message, Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -126,6 +142,22 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        int selectedCayegoryId = selectedCategory.getId();
+        if(requestCode == ADD_COURSE_REQUEST_CODE && resultCode == RESULT_OK){
+            Course course = new Course();
+            course.setCategory_id(selectedCayegoryId);
+            course.setCourse_name(data.getStringExtra(AddEditActivity.COURSE_NAME));
+            course.setUnitPrice(data.getStringExtra(AddEditActivity.COURSE_PRICE));
+            mainActivityViewModel.addNewCourse(course);
+
+        }else if(requestCode == EDIT_COURSE_REQUEST_CODE && resultCode == RESULT_OK){
+            Course course = new Course();
+            course.setCategory_id(selectedCayegoryId);
+            course.setCourse_name(data.getStringExtra(AddEditActivity.COURSE_NAME));
+            course.setUnitPrice(data.getStringExtra(AddEditActivity.COURSE_PRICE));
+            course.setCourse_id(selectedCourseId);
+            mainActivityViewModel.updateCourse(course);
+        }
         
     }
 }

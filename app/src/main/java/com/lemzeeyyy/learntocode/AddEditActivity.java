@@ -32,7 +32,7 @@ public class AddEditActivity extends AppCompatActivity {
         addEditBinding.setCourse(course);
         clickHandler = new AddEditClickHandler(this);
         addEditBinding.setClickHander(clickHandler);
-        Intent intent = new Intent();
+        Intent intent = getIntent();
         if(intent.hasExtra(COURSE_ID)){
             //When Course is Clicked (Recyclerview item)
             setTitle("Edit Course");
