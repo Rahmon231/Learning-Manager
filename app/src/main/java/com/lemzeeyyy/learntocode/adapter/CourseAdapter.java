@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lemzeeyyy.learntocode.CourseDiffCallback;
 import com.lemzeeyyy.learntocode.R;
 import com.lemzeeyyy.learntocode.databinding.CourseListItemBinding;
 import com.lemzeeyyy.learntocode.model.Course;
@@ -70,9 +72,15 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         this.listener = listener;
     }
 
-    public void setCourseArrayList(ArrayList<Course> courseArrayList) {
-        this.courseArrayList = courseArrayList;
-        notifyDataSetChanged();
-    }
+//    public void setCourseArrayList(ArrayList<Course> courseArrayList) {
+//        this.courseArrayList = courseArrayList;
+//        notifyDataSetChanged();
+//    }
+public void setCourseArrayList(ArrayList<Course> newCourseList) {
+   final DiffUtil.DiffResult result = DiffUtil.calculateDiff(new
+           CourseDiffCallback(courseArrayList,newCourseList),false);
+   courseArrayList = newCourseList;
+   result.dispatchUpdatesTo(CourseAdapter.this);
+}
 }
 

@@ -11,6 +11,7 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Objects;
 
 
 @Entity(tableName = "course_table",foreignKeys = @ForeignKey(entity = Category.class,
@@ -86,7 +87,21 @@ public class Course extends BaseObservable {
     public void setUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
         notifyPropertyChanged(BR.unitPrice);
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return course_id == course.course_id &&
+                category_id == course.category_id
+                && course_name.equals(course.course_name)
+                && unitPrice.equals(course.unitPrice);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(course_id, category_id, course_name, unitPrice);
     }
 }
